@@ -6,8 +6,8 @@ from .models import Book, Library
 # FUNCTION-BASED VIEW: List All Books
 # ----------------------------------------
 def list_books(request):
-    books = Book.objects.select_related('author').all()
-    return render(request, "list_books.html", {"books": books})
+    books = Book.objects.all()
+    return render(request, "relationship_app/list_books.html", {"books": books})
 
 # ----------------------------------------
 # CLASS-BASED VIEW: Library Detail
