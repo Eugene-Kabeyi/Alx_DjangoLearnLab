@@ -37,8 +37,14 @@ except Library.DoesNotExist:
 # 3. Retrieve the librarian for a library
 # -----------------------------------------
 
-print("\n Librarian for", library_name + ":")
-if library and hasattr(library, 'librarian'):
-    print(" -", library.librarian.name)
-else:
-    print("No librarian assigned or library not found!")
+library_name = "Central Library"
+
+try:
+    library = Library.objects.get(name=library_name)
+    librarian = Librarian.objects.get(library=library)
+    print("\nLibrarian for", library_name + ":")
+    print(" -", librarian.name)
+except Library.DoesNotExist:
+    print("Library not found!")
+except Librarian.DoesNotExist:
+    print("No librarian assigned to this library!")
