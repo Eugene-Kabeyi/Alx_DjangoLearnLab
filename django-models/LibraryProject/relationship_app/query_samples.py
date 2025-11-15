@@ -6,11 +6,12 @@ from relationship_app.models import Author, Book, Library, Librarian
 # -----------------------------------------
 
 author_name = "George Orwell"
+author = Author.objects.filter(name=author_name).first()
 
 print("\n Books by", author_name + ":")
- 
+
 try:
-    author = Author.objects.get(name=author_name)
+  
     if author:
         books = author.books.all()
         for book in books:
