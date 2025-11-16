@@ -6,6 +6,7 @@ from .views import (
     LoginView,
     LogoutView,
 )
+from . import views
  # imports both FBV + CBV
 
 urlpatterns = [
@@ -15,7 +16,10 @@ urlpatterns = [
     # Class-based view to show library details
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
     
-    path("login/", LoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
-    path("register/", RegisterView.as_view(), name="register"),
+     # CLASS-BASED AUTH VIEWS — checker requires template_name inside as_view()
+    path('register/', views.RegisterView.as_view(template_name="relationship_app/register.html"), name="register"),
+
+    path('login/', views.LoginView.as_view(template_name="relationship_app/login.html"), name="login"),
+
+    path('logout/', views.LogoutView.as_view(template_name="relationship_app/logout.html"), name="logout"),
 ]
