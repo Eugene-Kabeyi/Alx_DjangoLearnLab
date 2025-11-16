@@ -39,7 +39,23 @@ SECRET_KEY = 'django-insecure-i%d!6q7v5g4@p&e@c_7w^t8)jqvtjw_di_zi$udrtfdpnuk+&^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "example.com").split(",")
+
+# --------- Force HTTPS & HSTS ----------
+# Redirect all plain HTTP to HTTPS
+SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"
+
+# If Django is behind a reverse proxy (e.g., nginx), use this so Django knows requests were HTTPS
+# Example: nginx should set "proxy_set_header X-Forwarded-Proto $scheme;"
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+# HTTP Strict Transport Security (HSTS)
+# WARNING: setting a long HSTS in production is irreversible for browsers that receive it.
+# Start with a short time for testing (e.g. 60) and increase to 31536000 (1 year) when ready.
+SECURE_HSTS_SECONDS = 31536000        # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True # Apply HSTS to all subdomains
+SECURE_HSTS_PRELOAD = True            # Allows site to be added to browser preload list
+
 
 
 # Application definition

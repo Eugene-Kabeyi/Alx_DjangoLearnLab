@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Book List</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <h1>Library Books</h1>
+
+    <!-- Search Form -->
+    <form method="GET" action="{% url 'list_books' %}">
+        {% csrf_token %}
+        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q|default_if_none:'' }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Book List -->
+    <ul>
+        {% for book in books %}
+        <li>
+            <strong>{{ book.title|escape }}</strong> by {{ book.author|escape }} ({{ book.publication_year }})
+        </li>
+        {% empty %}
+        <li>No books found.</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
