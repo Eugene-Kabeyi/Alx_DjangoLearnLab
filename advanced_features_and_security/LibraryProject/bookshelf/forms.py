@@ -1,5 +1,5 @@
 # relationship_app/forms.py
 from django import forms
 
-class BookSearchForm(forms.Form):
+class ExampleForm(forms.Form):
     q = forms.CharField(max_length=100, required=False)

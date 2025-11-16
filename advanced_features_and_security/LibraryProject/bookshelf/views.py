@@ -4,7 +4,7 @@ from .models import Book
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Document
-from .forms import BookSearchForm
+from .forms import ExampleForm
 
 # Create your views here.
 def book_list(request):
@@ -15,7 +15,7 @@ def book_list(request):
     return render(request, 'bookshelf/book_list.html', context), HttpResponse("Hello, this is the book list view.")
 
 def search_books(request):
-    form = BookSearchForm(request.GET or None)
+    form = ExampleForm(request.GET or None)
     books = Book.objects.none()
     if form.is_valid():
         q = form.cleaned_data["q"]
