@@ -8,6 +8,9 @@ from .views import (
     admin_view,
     librarian_view,
     member_view,
+    add_book,
+    edit_book,
+    delete_book,
 )
 from . import views
  # imports both FBV + CBV
@@ -24,11 +27,17 @@ urlpatterns = [
 
     path('login/', views.LoginView.as_view(template_name="relationship_app/login.html"), name="login"),
 
-    path('logout/', views.LogoutView.as_view(template_name="relationship_app/logout.html"), name="logout"),
+    path('logout/',views.LogoutView.as_view(template_name="relationship_app/logout.html"),name="logout"),
+
 
     # Role-based access views
     path('admin-view/', views.admin_view, name='admin_view'),   
     path('librarian-view/', views.librarian_view, name='librarian_view'),   
     path('member-view/', views.member_view, name='member_view'),
+    
+    # Book management views
+    path('add-book/', views.add_book, name='add_book'), 
+    path('edit-book/<int:book_id>/', views.edit_book, name='edit_book'),
+    path('delete-book/<int:book_id>/', views.delete_book, name='delete_book'),
 
 ]
