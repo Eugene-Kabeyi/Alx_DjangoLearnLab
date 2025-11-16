@@ -10,11 +10,25 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+# Use env var to avoid accidentally turning off debug in local dev.
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
+
+# Security-related settings
+SECURE_BROWSER_XSS_FILTER = True                    # Enables X-XSS-Protection header
+X_FRAME_OPTIONS = "DENY"                            # Prevent clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True                  # Adds X-Content-Type-Options: nosniff
+SECURE_SSL_REDIRECT = os.environ.get("SECURE_SSL_REDIRECT", "True") == "True"  # Redirect HTTP -> HTTPS
+
+# Cookies only over HTTPS in production
+CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE", "True") == "True"
+SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE", "True") == "True"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -40,6 +54,7 @@ INSTALLED_APPS = [
     'bookshelf',
     'relationship_app',
     'users',
+    'csp',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser' 
@@ -54,9 +69,27 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "csp.middleware.CSPMiddleware",
 ]
 
+# Example django-csp configuration (adjust to your needs)
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_SCRIPT_SRC = ("'self'",)   # add trusted CDNs if needed, e.g. ('https://cdnjs.cloudflare.com',)
+CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # avoid 'unsafe-inline' if possible
+CSP_IMG_SRC = ("'self'", "data:")
+CSP_OBJECT_SRC = ("'none'",)
+CSP_BASE_URI = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'none'",)
 ROOT_URLCONF = 'LibraryProject.urls'
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "root": {"handlers": ["console"], "level": "WARNING"},
+}
 
 TEMPLATES = [
     {
