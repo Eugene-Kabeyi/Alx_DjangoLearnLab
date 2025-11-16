@@ -47,6 +47,7 @@ class RegisterView(FormView):
         return super().form_valid(form)
 
 def register(request):
+    UserCreationForm()
     return RegisterView.as_view(template_name="relationship_app/register.html")(request)
 # ----------------------------------------
 # LOGIN VIEW
