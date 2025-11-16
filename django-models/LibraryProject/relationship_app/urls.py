@@ -2,9 +2,9 @@ from django.urls import path
 from .views import (
     list_books,
     LibraryDetailView,
-    register_view,
-    login_view,
-    logout_view,
+    RegisterView,
+    LoginView,
+    LogoutView,
 )
  # imports both FBV + CBV
 
@@ -15,7 +15,7 @@ urlpatterns = [
     # Class-based view to show library details
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
     
-    path("login/", login_view, name="login"),
-    path("logout/", logout_view, name="logout"),
-    path("register/", register_view, name="register"),
+    path("login/", LoginView.as_view(), name="login"),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("register/", RegisterView.as_view(), name="register"),
 ]
