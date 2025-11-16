@@ -1,20 +1,7 @@
 from django.db import models
-from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser, Book
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
-# ----------------------------------------
-# CUSTOM USER ADMIN
-# ----------------------------------------
-class CustomUserAdmin(UserAdmin):
-    model = CustomUser
-    # Add custom fields to admin form
-    fieldsets = UserAdmin.fieldsets + (
-        ("Additional Info", {"fields": ("date_of_birth", "profile_photo")}),
-    )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        ("Additional Info", {"fields": ("date_of_birth", "profile_photo")}),
-    )
+
 
 # ----------------------------------------
 # CUSTOM USER MANAGER
