@@ -12,7 +12,7 @@ from . import views
 urlpatterns = [
     # Function-based view to list all books
     path('books/', list_books, name='list_books'),
-    
+    path('register/', views.register, name="register"),
     # Class-based view to show library details
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
     

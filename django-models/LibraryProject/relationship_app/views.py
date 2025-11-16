@@ -46,7 +46,8 @@ class RegisterView(FormView):
         login(self.request, user)  # Auto login
         return super().form_valid(form)
 
-
+def register(request):
+    return RegisterView.as_view(template_name="relationship_app/register.html")(request)
 # ----------------------------------------
 # LOGIN VIEW
 # ----------------------------------------
