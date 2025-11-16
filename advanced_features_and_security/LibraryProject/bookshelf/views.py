@@ -4,6 +4,7 @@ from .models import Book
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from .models import Document
+from .forms import BookSearchForm
 
 # Create your views here.
 def book_list(request):
@@ -12,6 +13,16 @@ def book_list(request):
     context = {'book_list':books}
 
     return render(request, 'bookshelf/book_list.html', context), HttpResponse("Hello, this is the book list view.")
+
+def search_books(request):
+    form = BookSearchForm(request.GET or None)
+    books = Book.objects.none()
+    if form.is_valid():
+        q = form.cleaned_data["q"]
+        # Use ORM filtering — parameterized and safe
+        if q:
+            books = Book.objects.select_related("author").filter(title__icontains=q)
+    return render(request, "relationship_app/search_results.html", {"form": form, "books": books})
 
 
 @permission_required('secure_app.can_view', raise_exception=True)
