@@ -7,6 +7,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views.generic import FormView, View
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import user_passes_test, login_required
 
 # ----------------------------------------
 # FUNCTION-BASED VIEW: List All Books
@@ -69,3 +70,35 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return render(request, "relationship_app/logout.html")
+    
+# ----------------------------------------
+# HELPER FUNCTIONS FOR ROLE CHECKING
+# ----------------------------------------
+
+def is_admin(user):
+    return user.is_authenticated and user.profile.role == "Admin"
+
+def is_librarian(user):
+    return user.is_authenticated and user.profile.role == "Librarian"
+
+def is_member(user):
+    return user.is_authenticated and user.profile.role == "Member"
+
+
+# ----------------------------------------
+# ROLE-SPECIFIC VIEWS
+# ----------------------------------------
+
+@user_passes_test(is_admin)
+def admin_view(request):
+    return render(request, "relationship_app/admin_view.html")
+
+
+@user_passes_test(is_librarian)
+def librarian_view(request):
+    return render(request, "relationship_app/librarian_view.html")
+
+
+@user_passes_test(is_member)
+def member_view(request):
+    return render(request, "relationship_app/member_view.html")
