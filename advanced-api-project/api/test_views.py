@@ -1,71 +1,48 @@
-# api/test_views.py
-
-from django.test import TestCase
-from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
 from rest_framework import status
-from .models import Book, Author
+from django.urls import reverse
+from .models import Book
 
+class BookAPITests(APITestCase):
 
-class BookAPITests(TestCase):
-
-    # This function runs before every test
     def setUp(self):
-        # Create a test author
-        self.author = Author.objects.create(name="Test Author")
-
-        # Create a test book
+        # Create a book before each test
         self.book = Book.objects.create(
             title="Test Book",
-            description="A simple test book",
-            author=self.author
+            author="John Doe",
+            publication_year=2020
         )
 
-        # Create client to simulate API calls
-        self.client = APIClient()
-
-    # -----------------------------
-    # 📌 TEST LIST BOOK ENDPOINT
-    # -----------------------------
-    def test_book_list(self):
-        response = self.client.get("/books/list/")
+    def test_get_book_list(self):
+        """Test listing all books"""
+        url = reverse('book-list')  # Adjust name based on your urls
+        response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # -----------------------------
-    # 📌 TEST BOOK DETAIL ENDPOINT
-    # -----------------------------
-    def test_book_detail(self):
-        response = self.client.get(f"/books/{self.book.id}/")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-    # -----------------------------
-    # 📌 TEST CREATE BOOK ENDPOINT
-    # -----------------------------
     def test_create_book(self):
+        """Test creating a new book"""
+        url = reverse('book-list')
         data = {
             "title": "New Book",
-            "description": "New desc",
-            "author": self.author.id
+            "author": "Author B",
+            "publication_year": 2023
         }
-
-        response = self.client.post("/books/create/", data)
+        response = self.client.post(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-    # -----------------------------
-    # 📌 TEST UPDATE BOOK ENDPOINT
-    # -----------------------------
     def test_update_book(self):
+        """Test updating a book"""
+        url = reverse('book-detail', args=[self.book.id])
         data = {
-            "title": "Updated Title",
-            "description": "Updated description",
-            "author": self.author.id
+            "title": "Updated Book",
+            "author": "John Doe",
+            "publication_year": 2021
         }
-
-        response = self.client.put(f"/books/update/?id={self.book.id}", data)
+        response = self.client.put(url, data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # -----------------------------
-    # 📌 TEST DELETE BOOK ENDPOINT
-    # -----------------------------
     def test_delete_book(self):
-        response = self.client.delete(f"/books/delete/?id={self.book.id}")
+        """Test deleting a book"""
+        url = reverse('book-detail', args=[self.book.id])
+        response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
