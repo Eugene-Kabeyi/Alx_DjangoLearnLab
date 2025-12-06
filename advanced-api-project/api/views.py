@@ -6,10 +6,8 @@ from rest_framework.generics import (
     DestroyAPIView
 )
 
-from rest_framework.permissions import (
-    IsAuthenticatedOrReadOnly,
-    IsAuthenticated
-)
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+
 
 from rest_framework import viewsets
 
