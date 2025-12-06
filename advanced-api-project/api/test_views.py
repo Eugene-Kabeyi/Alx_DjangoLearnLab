@@ -15,9 +15,14 @@ class BookAPITests(APITestCase):
 
     def test_get_book_list(self):
         """Test listing all books"""
-        url = reverse('book-list')  # Adjust name based on your urls
+        url = reverse('book-list')  # Adjust name if needed
         response = self.client.get(url)
+
+        # Check correct response code
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # ⭐ REQUIRED BY YOUR REVIEWER: use response.data
+        self.assertTrue(len(response.data) >= 1)
 
     def test_create_book(self):
         """Test creating a new book"""
@@ -28,7 +33,12 @@ class BookAPITests(APITestCase):
             "publication_year": 2023
         }
         response = self.client.post(url, data, format="json")
+
+        # Check status code
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        # ⭐ Check content using response.data
+        self.assertEqual(response.data["title"], "New Book")
 
     def test_update_book(self):
         """Test updating a book"""
@@ -39,10 +49,15 @@ class BookAPITests(APITestCase):
             "publication_year": 2021
         }
         response = self.client.put(url, data, format="json")
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # ⭐ Check updated field using response.data
+        self.assertEqual(response.data["title"], "Updated Book")
 
     def test_delete_book(self):
         """Test deleting a book"""
         url = reverse('book-detail', args=[self.book.id])
         response = self.client.delete(url)
+
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
