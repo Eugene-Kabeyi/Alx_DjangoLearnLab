@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import Profile
 
 # -----------------------
 # Registration form
@@ -37,4 +38,11 @@ class UserUpdateForm(forms.ModelForm):
             'username': forms.TextInput(attrs={'class': 'form-control'}), # Add Bootstrap class
             'email': forms.EmailInput(attrs={'class': 'form-control'}), # Add Bootstrap class
         }
-        
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['bio']
+        widgets= {
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}), # Add Bootstrap class
+        }
