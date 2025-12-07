@@ -16,7 +16,7 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     
     # Comments Add
-    path('posts/<int:post_id>/comments/new/', views.add_comment, name='add-comment'),
+    path('post/<int:post_id>/comments/new/', views.add_comment, name='add-comment'),
    
     # Comments Edit
     path('comments/<int:comment_id>/edit/', views.edit_comment, name='edit-comment'),
@@ -25,8 +25,8 @@ urlpatterns = [
     path('comments/<int:comment_id>/delete/', views.delete_comment, name='delete-comment'),
 
     # Post URLs  path('posts/', PostListView.as_view(), name='post-list'),                 # list all
-    path('posts/new/', views.PostCreateView.as_view(), name='post-create'),         # create
-    path('posts/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),    # detail
-    path('posts/<int:pk>/edit/', views.PostUpdateView.as_view(), name='post-edit'), # edit
-    path('posts/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'), # delete
+    path('post/new/', views.PostCreateView.as_view(), name='post-create'),         # create
+    path('post/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),    # detail
+    path('post/<int:pk>/edit/', views.PostUpdateView.as_view(), name='post-edit'), # edit
+    path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'), # delete
 ]
