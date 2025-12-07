@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, Comment, Post
 
 # -----------------------
 # Registration form
@@ -45,4 +45,27 @@ class ProfileForm(forms.ModelForm):
         fields = ['bio']
         widgets= {
             'bio': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}), # Add Bootstrap class
+        }
+        
+# -----------------------
+# Comment form  
+# -----------------------
+class CommentForm(forms.ModelForm):
+
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Add a comment...'}),
+        }
+        
+# Simple Post form using ModelForm (beginner-friendly)
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        # We omit author because we will set it automatically in the view
+        fields = ['title', 'content']
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Post title', 'class': 'form-control'}),
+            'content': forms.Textarea(attrs={'placeholder': 'Write your post here...', 'class': 'form-control', 'rows': 8}),
         }
