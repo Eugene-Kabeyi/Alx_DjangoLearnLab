@@ -6,6 +6,7 @@
 
 <form method="post">
     {% csrf_token %}
+    <p>{{ form.tags.label_tag }} {{ form.tags }}</p>
     {{ form.as_p }}
     <button type="submit">{% if form.instance.pk %}Save changes{% else %}Publish{% endif %}</button>
 </form>

@@ -29,4 +29,10 @@ urlpatterns = [
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='post-detail'),    # detail
     path('post/<int:pk>/update/', views.PostUpdateView.as_view(), name='post-edit'), # edit
     path('post/<int:pk>/delete/', views.PostDeleteView.as_view(), name='post-delete'), # delete
+
+     # NEW TAG URL
+    path('tags/<str:tag_name>/', views.PostListByTagView.as_view(), name='post-by-tag'),
+
+    # NEW SEARCH URL
+    path('search/', views.SearchView.as_view(), name='search'),
 ]

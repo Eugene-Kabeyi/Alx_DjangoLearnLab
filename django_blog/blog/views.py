@@ -9,7 +9,9 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 # Mixins for permission checks
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post
+from .models import Post, Tag
+
+from django.db.models import Q
 # ----------------------------
 # Registration view (custom)
 # ----------------------------
@@ -211,3 +213,36 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def handle_no_permission(self):
         messages.error(self.request, "You are not allowed to delete this post.")
         return redirect('post-detail', pk=self.get_object().pk)
+ 
+ #-------------------------
+ # Search view (public)
+ #------------------------   
+class SearchView(ListView):
+    model = Post
+    template_name = "blog/search_results.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        query = self.request.GET.get("q", "")
+        return Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["query"] = self.request.GET.get("q", "")
+        return context
+  
+#-------------------------
+# List posts by tag (public)   
+#------------------------   
+class PostListByTagView(ListView):
+    model = Post
+    template_name = "blog/post_list.html"
+    context_object_name = "posts"
+
+    def get_queryset(self):
+        tag_name = self.kwargs['tag_name']
+        return Post.objects.filter(tags__name=tag_name)
