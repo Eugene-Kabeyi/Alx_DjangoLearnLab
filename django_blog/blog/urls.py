@@ -42,7 +42,7 @@ urlpatterns = [
     path('search/', views.SearchView.as_view(), name='search'),
     
 
-    path('post/<int:post_id>/comments/new/', CommentCreateView.as_view(), name='comment-create'),
+    path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='comment-create'),
     path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-edit'),
     path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
 
