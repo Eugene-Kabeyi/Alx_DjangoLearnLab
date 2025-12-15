@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from taggit.forms import TagWidget   
 from .models import Profile, Comment, Post , Tag
 
 # -----------------------
@@ -64,17 +65,15 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         # We omit author because we will set it automatically in the view
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']
         widgets = {
+            'tags': TagWidget(),
             'title': forms.TextInput(attrs={'placeholder': 'Post title', 'class': 'form-control'}),
             'content': forms.Textarea(attrs={'placeholder': 'Write your post here...', 'class': 'form-control', 'rows': 8}),
         }
         
-        # Add tags field with a multiple select widget
-        tags = forms.CharField(
-        required=False,
-        help_text="Enter tags separated by commas. Example: python, django, api"
-    )
+
+    
        # Convert text → Tag objects
     def save(self, commit=True):
         post = super().save(commit=False)
