@@ -1,4 +1,3 @@
-from advanced_features_and_security.LibraryProject.relationship_app.models import User
 from . import models
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
