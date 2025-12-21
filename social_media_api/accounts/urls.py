@@ -12,5 +12,11 @@ urlpatterns = [
     path('register/', views.RegisterViewSet.as_view({'post': 'create'}), name='register'),
     path('login/', views.LoginViewSet.as_view({'post': 'create'}), name='login'),
     
+    
+    path('feed/', views.FeedView.as_view(), name='user-feed'),
+
+    path('follow/<int:user_id>/', views.FollowUserView.as_view(), name='follow-user'),
+    path('unfollow/<int:user_id>/', views.UnfollowUserView.as_view(), name='unfollow-user'),
+    
 ]
 
