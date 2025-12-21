@@ -20,6 +20,7 @@ class LoginViewSet(viewsets.ViewSet):
     serializer_class = serializers.LoginSerializer
 
     def create(self, request):
+        
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         username = serializer.validated_data['username']
