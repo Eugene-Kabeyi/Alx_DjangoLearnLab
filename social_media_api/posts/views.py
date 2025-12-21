@@ -36,9 +36,7 @@ class FeedView(APIView):
         following_users = request.user.following.all()
 
         # Must use this exact filter + order_by pattern
-        posts = Post.objects.filter(
-            author__in=following_users
-        ).order_by('-created_at')
+        posts = Post.objects.filter(author__in=following_users).order_by('-created_at')
 
         serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
