@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import (
+    FeedView,
     PostListCreateView,
     PostDetailView,
     CommentListCreateView,
@@ -14,4 +15,7 @@ urlpatterns = [
     # Comments
     path('comment/', CommentListCreateView.as_view(), name='comment-list-create'),
     path('comment/<int:pk>/', CommentDetailView.as_view(), name='comment-detail'),
+    
+    # Feed
+    path('feed/', FeedView.as_view(), name='feed'),
 ]
